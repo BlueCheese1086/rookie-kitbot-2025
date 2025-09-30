@@ -61,7 +61,14 @@ public class Robot extends TimedRobot {
     lateralMove(0.3, 0.0, 0.67),
     pause(0.8),
     autonoumousOuttake(1.0, 0.5),
-    lateralMove(-0.4, 0.0, 0.67)
+    lateralMove(-0.4, 0.0, 0.67)/*,
+    lateralMove(0.0, 0.5, 0.67),
+    lateralMove(0.67, 0.2, 1),
+    lateralMove(0, 0.5, 0.4),
+    lateralMove(-0.4, 0.0, 0.5),
+    pause(3.0),
+    lateralMove(0.3, 0.0, 1.5),
+    autonoumousOuttake(1.0, 1.0) */
   );
 
   private double modifyJoystick(double in) {
