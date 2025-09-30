@@ -10,6 +10,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix6.controls.VoltageOut;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,8 +50,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return this.run(() -> {
       System.out.println("Command: setVoltagesArcadeCommand 2 Running.");
       var speeds = DifferentialDrive.arcadeDriveIK(drive.getAsDouble(), steer.getAsDouble(), false);
-      this.setVoltages(speeds.left * 10, speeds.right * 10);
+      this.setVoltages(speeds.left, speeds.right);
     });
+
   }
 
   /** Creates a new DrivetrainSubsystem. */

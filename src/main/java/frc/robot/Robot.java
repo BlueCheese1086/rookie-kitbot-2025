@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 //import edu.wpi.first.wpilibj2.
@@ -40,8 +42,30 @@ public class Robot extends TimedRobot {
 
   OuttakeTest m_outtakeSubsystem = new OuttakeTest();
 
+  private Command lateralMove(double upDown, double turn, double moveDuration){
+    return drivetrainSubsystem.setVoltagesArcadeCommand(
+      () -> upDown,
+      () -> turn ).withTimeout(moveDuration);
+  }
+
+  private Command autonoumousOuttake(double running, double outtakeDuration) {
+    return m_outtakeSubsystem.setOuttakeVoltagesArcadeCommand(
+      () -> running).withTimeout(outtakeDuration);
+  }
+  
+  private Command pause(double pauseDuration) {
+    return Commands.waitSeconds(pauseDuration);
+  }
+
+  private Command autonomousCommand = Commands.sequence(
+    lateralMove(0.3, 0.0, 0.67),
+    pause(0.8),
+    autonoumousOuttake(1.0, 0.5),
+    lateralMove(-0.4, 0.0, 0.67)
+  );
+
   private double modifyJoystick(double in) {
-    if (Math.abs(in) < 0.1) {
+    if (Math.abs(in) < 0.05) {
       return 0; 
     }
     return in * in * Math.signum(in);
@@ -64,16 +88,18 @@ public class Robot extends TimedRobot {
           () -> modifyJoystick(-controller.getLeftY()),
           () -> modifyJoystick(-controller.getRightX())));
     
-    controller.rightTrigger(0.2).whileTrue(
+    m_outtakeSubsystem.setDefaultCommand(m_outtakeSubsystem.setVoltagesCommand(()-> 0.0));
+     
+    controller.rightTrigger().whileTrue(
         m_outtakeSubsystem.setOuttakeVoltagesArcadeCommand(
-          controller.getRightTriggerAxis()
+          () -> controller.getRightTriggerAxis()
         )
       );
     
-    controller.leftTrigger(0.2).toggleOnTrue(
+    controller.leftTrigger().toggleOnTrue(
       drivetrainSubsystem.setVoltagesArcadeCommand(
-        () -> modifyJoystick(-controller.getLeftY()* 0.1),
-        () -> modifyJoystick(-controller.getRightX() * 0.1))
+        () -> modifyJoystick(-controller.getLeftY()* 0.3),
+        () -> modifyJoystick(-controller.getRightX() * 0.3))
     );
     
   }
@@ -84,6 +110,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_timer.restart();
+    CommandScheduler.getInstance().schedule(autonomousCommand);
   }
 
   /** This function is called periodically during autonomous. */
@@ -100,7 +127,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters teleoperated mode. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    autonomousCommand.cancel();
+  }
 
   /** This function is called periodically during teleoperated mode. */
   @Override

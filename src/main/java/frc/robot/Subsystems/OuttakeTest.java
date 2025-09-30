@@ -13,7 +13,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
+   
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
@@ -23,7 +23,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public class OuttakeTest extends SubsystemBase {
-  public static final int SPARKMAX_OUTTAKE_ID = 1;
+  // Plug in USB to C into Spark MAX on bot and open rev software to check and change ID. 
+  public static final int SPARKMAX_OUTTAKE_ID = 5;
 
   SparkMax outtakeMotor = new SparkMax(SPARKMAX_OUTTAKE_ID, SparkMax.MotorType.kBrushed);
 
@@ -41,11 +42,11 @@ public class OuttakeTest extends SubsystemBase {
     outtakeMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
   
   }
-   public Command setOuttakeVoltagesArcadeCommand(Double drop) {
+   public Command setOuttakeVoltagesArcadeCommand(DoubleSupplier drop){
     System.out.println("Command: setOuttakeVoltagesArcadeCommand: Running. ");
     return this.run(() -> {
-      System.out.println("Command: setVoltagesArcadeCommand 2: Running.");
-      double score = drop;
+      System.out.println("Command: setOuttakeVoltagesArcadeCommand 2: Running.");
+      double score = drop.getAsDouble();
       this.setVoltages(score * 12);
   }); 
 
