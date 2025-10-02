@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 //import edu.wpi.first.wpilibj2.
 import frc.robot.Subsystems.DrivetrainSubsystem;
 //import frc.robot.Subsystems.OuttakeSubsystem;
@@ -46,7 +45,7 @@ public class Robot extends TimedRobot {
   private Command lateralMove(double upDown, double turn, double moveDuration){
     return drivetrainSubsystem.setVoltagesArcadeCommand(
       () -> upDown,
-      () -> turn ).withTimeout(moveDuration);
+      () -> turn).withTimeout(moveDuration);
   }
 
   private Command autonoumousOuttake(double running, double outtakeDuration) {
@@ -59,21 +58,30 @@ public class Robot extends TimedRobot {
   }
 
   private Command autonomousCommand = Commands.sequence(
-    lateralMove(0.3, 0.0, 0.67),
-    pause(0.8),
+    // -- Middle to Reef --
+    lateralMove(0.3, 0.0, 0.6),
+    pause(1.2),
     autonoumousOuttake(1.0, 0.5),
-    lateralMove(-0.4, 0.0, 0.67)
-    //Rigid, Move to Reload, Score, Move to Reload -John
-    /*  ,
-    lateralMove(0.0, 0.67, 0.5),
-    lateralMove(0.5, 0.0, 0.67), 
-    lateralMove(0.0,0.5,0.67),
-    lateralMove(0.5,0.0,1),
-    lateralMove(0.0,0.5,2),
-    lateralMove(-0.5,0.0,0.67),
-    lateralMove(0.3, 0.0,2),
+    pause(0.5),
+    autonoumousOuttake(0.0, 0.1),
+    lateralMove(-0.3,0.0, 0.5),
+    pause(1.0),
+    lateralMove(0.0, 0.8, 0.4),
+    lateralMove(0.4, 0.0, 0.5),
+    pause(1.0),
+    lateralMove(0.0, -0.9, 0.2),
+    lateralMove(0.5,0.0,1.3),
+    //full turn?
+    lateralMove(0.0,0.8,0.9),
+    lateralMove(0.3,0.0,1.5)
+    /* 
+    autonoumousOuttake(1.0,0.5),
+    lateralMove(-0.3, 0.0,1.5),
+    pause(3.0),
+    lateralMove(0.3, 0.0, 1.5),
     autonoumousOuttake(1.0,0.5 ),
-    lateralMove(-0.5, 0.0, 0.67) */
+    lateralMove(-0.3, 0.0, 1.5)
+    */
   );
 
   private double modifyJoystick(double in) {
