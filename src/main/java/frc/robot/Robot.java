@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 //import edu.wpi.first.wpilibj.PowerDistribution;
 //import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -17,17 +19,27 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-//import edu.wpi.first.wpilibj2.
-import frc.robot.Subsystems.DrivetrainSubsystem;
 //import frc.robot.Subsystems.OuttakeSubsystem;
 import frc.robot.Subsystems.OuttakeTest;
+import frc.robot.Subsystems.Drivetrain.DrivetrainSubsystem;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Subsystems.Drivetrain.DrivetrainSubsystem;
+
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
  * this project, you must also update the manifest file in the resource directory.
  */
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot{
   private final PWMSparkMax m_leftDrive = new PWMSparkMax(0);
   private final PWMSparkMax m_rightDrive = new PWMSparkMax(1);
   private final DifferentialDrive m_robotDrive =
@@ -81,6 +93,7 @@ public class Robot extends TimedRobot {
 
   /** Called once at the beginning of the robot program. */
   public Robot() {
+    
     SendableRegistry.addChild(m_robotDrive, m_leftDrive);
     SendableRegistry.addChild(m_robotDrive, m_rightDrive);
 
