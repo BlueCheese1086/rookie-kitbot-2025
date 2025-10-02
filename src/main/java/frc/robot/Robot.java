@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
   private final Timer m_timer = new Timer();
 
   CommandXboxController controller = new CommandXboxController(0);
+  CommandXboxController controller2 = new CommandXboxController(1);
   
   DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem(); 
 
@@ -62,6 +63,17 @@ public class Robot extends TimedRobot {
     pause(0.8),
     autonoumousOuttake(1.0, 0.5),
     lateralMove(-0.4, 0.0, 0.67)
+    //Rigid, Move to Reload, Score, Move to Reload -John
+    /*  ,
+    lateralMove(0.0, 0.67, 0.5),
+    lateralMove(0.5, 0.0, 0.67), 
+    lateralMove(0.0,0.5,0.67),
+    lateralMove(0.5,0.0,1),
+    lateralMove(0.0,0.5,2),
+    lateralMove(-0.5,0.0,0.67),
+    lateralMove(0.3, 0.0,2),
+    autonoumousOuttake(1.0,0.5 ),
+    lateralMove(-0.5, 0.0, 0.67) */
   );
 
   private double modifyJoystick(double in) {
@@ -90,19 +102,25 @@ public class Robot extends TimedRobot {
     
     m_outtakeSubsystem.setDefaultCommand(m_outtakeSubsystem.setVoltagesCommand(()-> 0.0));
      
-    controller.rightTrigger().whileTrue(
+    controller2.rightTrigger().whileTrue(
         m_outtakeSubsystem.setOuttakeVoltagesArcadeCommand(
-          () -> controller.getRightTriggerAxis()
+          () -> controller2.getRightTriggerAxis()
         )
       );
+
+    controller.x().onTrue(
+      lateralMove(0.0, 0.75, 0.5)
+    );
     
     controller.leftTrigger().toggleOnTrue(
       drivetrainSubsystem.setVoltagesArcadeCommand(
-        () -> modifyJoystick(-controller.getLeftY()* 0.3),
-        () -> modifyJoystick(-controller.getRightX() * 0.3))
+        () -> modifyJoystick(-controller.getLeftY()* 0.67),
+        () -> modifyJoystick(-controller.getRightX() * 0.67))
     );
     
   }
+
+
 
 
 

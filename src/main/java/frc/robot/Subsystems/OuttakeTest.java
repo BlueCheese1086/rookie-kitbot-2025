@@ -47,7 +47,7 @@ public class OuttakeTest extends SubsystemBase {
     return this.run(() -> {
       System.out.println("Command: setOuttakeVoltagesArcadeCommand 2: Running.");
       double score = drop.getAsDouble();
-      this.setVoltages(score * 12);
+      this.setVoltages(score * 7);
   }); 
 
   }
