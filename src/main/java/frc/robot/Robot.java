@@ -60,12 +60,11 @@ public class Robot extends TimedRobot {
   private Command autonomousCommand = Commands.sequence(
     // -- Middle to Reef --
     lateralMove(0.3, 0.0, 0.6),
-    pause(1.2),
+    pause(1.8),
     autonoumousOuttake(1.0, 0.5),
     pause(0.5),
     autonoumousOuttake(0.0, 0.1),
-    lateralMove(-0.3,0.0, 0.5),
-    pause(1.0),
+    pause(1.0) /* ,
     lateralMove(0.0, 0.8, 0.4),
     lateralMove(0.4, 0.0, 0.5),
     pause(1.0),
@@ -74,7 +73,7 @@ public class Robot extends TimedRobot {
     //full turn?
     lateralMove(0.0,0.8,0.9),
     lateralMove(0.3,0.0,1.5)
-    /* 
+     
     autonoumousOuttake(1.0,0.5),
     lateralMove(-0.3, 0.0,1.5),
     pause(3.0),
