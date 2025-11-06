@@ -19,12 +19,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
+import frc.robot.RobotMap;
+
 
 public class OuttakeTest extends SubsystemBase {
   // Plug in USB to C into Spark MAX on bot and open rev software to check and change ID. 
-  public static final int SPARKMAX_OUTTAKE_ID = 5;
 
-  SparkMax outtakeMotor = new SparkMax(SPARKMAX_OUTTAKE_ID, SparkMax.MotorType.kBrushed);
+  SparkMax outtakeMotor = new SparkMax(RobotMap.SPARKMAX_OUTTAKE_ID, SparkMax.MotorType.kBrushed);
 
   private void setVoltages(double volt) {    
     outtakeMotor.setVoltage(volt);
@@ -32,6 +33,7 @@ public class OuttakeTest extends SubsystemBase {
   }
 
   public Command setVoltagesCommand(DoubleSupplier volt) {
+    
     return this.run(() -> this.setVoltages(volt.getAsDouble()));
   }
   public OuttakeTest() {
